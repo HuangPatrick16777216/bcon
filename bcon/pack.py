@@ -61,7 +61,7 @@ def pack(obj: Any):
         for i in obj:
             data += pack(i)
     elif isinstance(obj, dict):
-        data = b"\x07" + struct.pack("<I", len(obj))
+        data = b"\x08" + struct.pack("<I", len(obj))
         for key, i in obj.items():
             data += pack(key)
             data += pack(i)
@@ -99,10 +99,11 @@ def unpack(data: Union[bytes, io.BytesIO]):
             obj.append(unpack(data))
         if cls == b"\x06":
             obj = tuple(obj)
-    elif cls == b"\x07":
+    elif cls == b"\x08":
         obj = {}
         length = struct.unpack("<I", data.read(4))[0]
         for i in range(length):
-            obj[unpack(data)] = unpack(data)
+            key = unpack(data)
+            obj[key] = unpack(data)
 
     return obj
