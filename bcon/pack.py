@@ -66,5 +66,11 @@ def unpack(data: Union[bytes, io.BytesIO]):
         obj = None
     elif cls == b"\x01":
         obj = (data.read(1) == b"\x01")
+    elif cls == b"\x02":
+        sign = 1 if data.read(1) == b"\x00" else -1
+        num = struct.unpack("<I", data.read(4))[0]
+        obj = sign * num
+    elif cls == b"\x03":
+        obj = struct.unpack("f", data.read(4))[0]
 
     return obj
