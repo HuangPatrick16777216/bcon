@@ -51,6 +51,10 @@ def pack(obj: Any):
         data = b"\x03" + struct.pack("f", obj)
         if len(data) != 5:
             raise ValueError(f"Float {obj} is too large or too small.")
+    elif isinstance(obj, str):
+        data = b"\x04" + struct.pack("<I", len(obj)) + obj.encode()
+    elif isinstance(obj, bytes):
+        data = b"\x04" + struct.pack("<I", len(obj)) + obj
     else:
         raise TypeError(f"Type {obj.__class__.__name__} is not allowed.")
 
@@ -72,5 +76,11 @@ def unpack(data: Union[bytes, io.BytesIO]):
         obj = sign * num
     elif cls == b"\x03":
         obj = struct.unpack("f", data.read(4))[0]
+    elif cls == b"\x04":
+        length = struct.unpack("<I", data.read(4))[0]
+        obj = data.read(length).decode()
+    elif cls == b"\x05":
+        length = struct.unpack("<I", data.read(4))[0]
+        obj = data.read(length)
 
     return obj
