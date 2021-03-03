@@ -41,6 +41,16 @@ def pack(obj: Any):
     elif isinstance(obj, bool):
         data = b"\x01"
         data += b"\x01" if obj else b"\x00"
+    elif isinstance(obj, int):
+        data = "\x02"
+        data += "\x00" if obj > 0 else "\x01"
+        data += struct.pack("<I", abs(obj))
+        if len(data) != 6:
+            raise ValueError(f"Integer {obj} is too large or too small.")
+    elif isinstance(obj, float):
+        data = "\x03" + struct.pack("f", obj)
+        if len(data) != 5:
+            raise ValueError(f"Float {obj} is too large or too small.")
     else:
         raise TypeError(f"Type {obj.__class__.__name__} is not allowed.")
 
