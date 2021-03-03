@@ -60,6 +60,11 @@ def pack(obj: Any):
         data += struct.pack("<I", len(obj))
         for i in obj:
             data += pack(i)
+    elif isinstance(obj, dict):
+        data = b"\x07" + struct.pack("<I", len(obj))
+        for key, i in obj.items():
+            data += pack(key)
+            data += pack(i)
     else:
         raise TypeError(f"Type {obj.__class__.__name__} is not allowed.")
 
