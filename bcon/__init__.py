@@ -20,3 +20,5 @@
 __version__ = "0.0.1"
 
 from . import pack
+from . import compress
+from .funcs import dumps, dump, loads, load
