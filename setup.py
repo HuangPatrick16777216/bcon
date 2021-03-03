@@ -24,7 +24,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="bcon",
-    version="0.0.1",
+    version="0.0.2",
     author="Patrick Huang",
     author_email="huangpatrick16777216@gmail.com",
     description="Python Binary Compressed Object Notation module.",
