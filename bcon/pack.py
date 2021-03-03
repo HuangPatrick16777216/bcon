@@ -32,7 +32,7 @@ Packs any of the following types into a string of bytes:
 
 import struct
 import io
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 
 def pack(obj: Any):
@@ -55,3 +55,16 @@ def pack(obj: Any):
         raise TypeError(f"Type {obj.__class__.__name__} is not allowed.")
 
     return data
+
+
+def unpack(data: Union[bytes, io.BytesIO]):
+    if isinstance(data, bytes):
+        data = io.BytesIO(data)
+
+    cls = data.read(1)
+    if cls == b"\x00":
+        obj = None
+    elif cls == b"\x01":
+        obj = (data.read(1) == b"\x01")
+
+    return obj
