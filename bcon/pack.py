@@ -32,4 +32,16 @@ Packs any of the following types into a string of bytes:
 
 import struct
 import io
+from typing import Any, Dict, List, Tuple
 
+
+def pack(obj: Any):
+    if obj is None:
+        data = b"\x00"
+    elif isinstance(obj, bool):
+        data = b"\x01"
+        data += b"\x01" if obj else b"\x00"
+    else:
+        raise TypeError(f"Type {obj.__class__.__name__} is not allowed.")
+
+    return data
