@@ -55,6 +55,11 @@ def pack(obj: Any):
         data = b"\x04" + struct.pack("<I", len(obj)) + obj.encode()
     elif isinstance(obj, bytes):
         data = b"\x05" + struct.pack("<I", len(obj)) + obj
+    elif isinstance(obj, (tuple, list)):
+        data = b"\06" if isinstance(obj, tuple) else b"\x07"
+        data += struct.pack("<I", len(obj))
+        for i in obj:
+            data += pack(i)
     else:
         raise TypeError(f"Type {obj.__class__.__name__} is not allowed.")
 
