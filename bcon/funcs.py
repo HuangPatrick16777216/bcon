@@ -35,5 +35,5 @@ def dump(obj: Any, file: BytesIO):
     file.write(dumps(obj))
 
 
-def loads(file: BytesIO):
+def load(file: BytesIO):
     return loads(file.read())
