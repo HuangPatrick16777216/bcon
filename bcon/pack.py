@@ -54,7 +54,7 @@ def pack(obj: Any):
     elif isinstance(obj, str):
         data = b"\x04" + struct.pack("<I", len(obj)) + obj.encode()
     elif isinstance(obj, bytes):
-        data = b"\x04" + struct.pack("<I", len(obj)) + obj
+        data = b"\x05" + struct.pack("<I", len(obj)) + obj
     else:
         raise TypeError(f"Type {obj.__class__.__name__} is not allowed.")
 
