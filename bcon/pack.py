@@ -99,5 +99,10 @@ def unpack(data: Union[bytes, io.BytesIO]):
             obj.append(unpack(data))
         if cls == b"\x06":
             obj = tuple(obj)
+    elif cls == b"\x07":
+        obj = {}
+        length = struct.unpack("<I", data.read(4))[0]
+        for i in range(length):
+            obj[unpack(data)] = unpack(data)
 
     return obj
